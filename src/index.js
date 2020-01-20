@@ -1,10 +1,20 @@
 "use strict";
 
+var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
 Object.defineProperty(exports, "__esModule", {
     value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+var _createClass = function () {
+    function defineProperties(target, props) {
+        for (var i = 0; i < props.length; i++) {
+            var descriptor = props[i];descriptor.enumerable = descriptor.enumerable || false;descriptor.configurable = true;if ("value" in descriptor) descriptor.writable = true;Object.defineProperty(target, descriptor.key, descriptor);
+        }
+    }return function (Constructor, protoProps, staticProps) {
+        if (protoProps) defineProperties(Constructor.prototype, protoProps);if (staticProps) defineProperties(Constructor, staticProps);return Constructor;
+    };
+}();
 
 var _react = require("react");
 
@@ -26,15 +36,39 @@ var _CSS3DRenderer = require("./CSS3DRenderer");
 
 var CSS3DRenderer = _interopRequireWildcard(_CSS3DRenderer);
 
-function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
+function _interopRequireWildcard(obj) {
+    if (obj && obj.__esModule) {
+        return obj;
+    } else {
+        var newObj = {};if (obj != null) {
+            for (var key in obj) {
+                if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key];
+            }
+        }newObj.default = obj;return newObj;
+    }
+}
 
-function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+function _interopRequireDefault(obj) {
+    return obj && obj.__esModule ? obj : { default: obj };
+}
 
-function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+function _classCallCheck(instance, Constructor) {
+    if (!(instance instanceof Constructor)) {
+        throw new TypeError("Cannot call a class as a function");
+    }
+}
 
-function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+function _possibleConstructorReturn(self, call) {
+    if (!self) {
+        throw new ReferenceError("this hasn't been initialised - super() hasn't been called");
+    }return call && ((typeof call === "undefined" ? "undefined" : _typeof(call)) === "object" || typeof call === "function") ? call : self;
+}
 
-function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+function _inherits(subClass, superClass) {
+    if (typeof superClass !== "function" && superClass !== null) {
+        throw new TypeError("Super expression must either be null or a function, not " + (typeof superClass === "undefined" ? "undefined" : _typeof(superClass)));
+    }subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } });if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass;
+}
 //import OBJLoader from 'three-react-obj-loader';
 
 
@@ -95,9 +129,9 @@ var Container3d = function (_Component) {
             scene = null;
             camera = null;
             controls = null;
-            window.removeEventListener("mousemove", this.onDocumentMouseMove, false)
+            window.removeEventListener("mousemove", this.onDocumentMouseMove, false);
             window.removeEventListener("resize", this.updateDimensions.bind(this));
-            window.cancelAnimationFrame(animation)
+            window.cancelAnimationFrame(animation);
         }
 
         /**
@@ -178,7 +212,6 @@ var Container3d = function (_Component) {
                 marginBottom = _props2.marginBottom,
                 height = _props2.height;
 
-
             if (percentageWidth) {
                 width = parseInt(window.innerWidth * parseInt(percentageWidth) / 100.0);
             }
@@ -200,13 +233,17 @@ var Container3d = function (_Component) {
 
             var canvas = this.refs.threeCanvas;
 
-            canvas.height = height;
+            if(canvas){
+                canvas.height = height;
+            }
+            
 
-            renderer.setSize(width, height);
-
-            camera.aspect = width / height;
-
-            camera.updateProjectionMatrix();
+            renderer && renderer.setSize(width, height);
+            if(camera){
+                camera.aspect = width / height;
+                camera.updateProjectionMatrix();
+            }
+            
         }
     }, {
         key: "init",
@@ -219,7 +256,10 @@ var Container3d = function (_Component) {
             var canvas = this.refs.threeCanvas;
             //const canvas2d = this.refs.cssCanvas;
 
-            canvas.height = height;
+            if(canvas){
+                canvas.height = height;
+            }
+
             var marginTop = this.props.marginTop;
 
             raycaster = new THREE.Raycaster();
@@ -233,7 +273,7 @@ var Container3d = function (_Component) {
                 antialias: this.props.antialias ? this.props.antialias : true,
                 alpha: true,
                 opacity: 0.5,
-		        preserveDrawingBuffer: true
+                preserveDrawingBuffer: true
             });
 
             renderer.shadowMap.enabled = true;
@@ -252,7 +292,6 @@ var Container3d = function (_Component) {
                     phi = _this$props.phi,
                     theta = _this$props.theta;
 
-
                 if (phi && theta && controls) {
                     controls.setPolarAngle(phi);
                     controls.setAzimuthalAngle(theta);
@@ -262,7 +301,7 @@ var Container3d = function (_Component) {
                     try {
                         _this.props.update(scene, camera, renderer);
                     } catch (error) {
-                        this.onError(error);
+                        this && this.onError(error);
                     }
                 }
 
@@ -348,7 +387,6 @@ var Container3d = function (_Component) {
                 enableKeys = _props3.enableKeys,
                 enablePan = _props3.enablePan;
 
-
             if (addGrid ? addGrid : false) {
                 var gridXZ = new THREE.GridHelper(20, 20);
                 gridXZ.name = "grid";
@@ -416,7 +454,6 @@ var Container3d = function (_Component) {
                 enableZoom = _props4.enableZoom,
                 enableKeys = _props4.enableKeys,
                 enablePan = _props4.enablePan;
-
 
             if (addGrid != undefined ? addGrid : true) {
                 var gridXZ = new THREE.GridHelper(20, 20);
@@ -506,14 +543,9 @@ var Container3d = function (_Component) {
             var style1 = {
                 zIndex: 5
             };
-            return _react2.default.createElement(
-                "div",
-                { ref: "rootthree" },
-                _react2.default.createElement("canvas", { ref: "threeCanvas",
-                    style: style1
-                }),
-                _react2.default.createElement("div", { ref: "cssCanvas" })
-            );
+            return _react2.default.createElement("div", { ref: "rootthree" }, _react2.default.createElement("canvas", { ref: "threeCanvas",
+                style: style1
+            }), _react2.default.createElement("div", { ref: "cssCanvas" }));
         }
     }]);
 
